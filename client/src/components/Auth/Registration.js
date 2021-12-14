@@ -85,7 +85,7 @@ const Registration = () => {
                         autoFocus
                         onChange={handleChange}
                         inputProps={{ minLength: 3, }}
-                        {...register('nickname', {required: false})}
+                        {...register('nickname')}
                         error={errors.nickname ? true : false}
                     />
                     <h3>{errors.nickname?.message}</h3>

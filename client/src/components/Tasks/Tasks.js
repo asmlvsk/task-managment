@@ -16,16 +16,20 @@ const Tasks = ({setCurrentId, currentId}) => {
     useEffect(() => {
         const sortArray = type => {
             const types = {
-                inProgress: 'inProgress',
+                inProgress: 'isDone',
                 done: 'isDone',
                 date: 'dueDate',
                 priority: 'priority',
             };
             const sortProperty = types[type];
-            const sorted = [...tasks].sort((a, b) => b[sortProperty] - a[sortProperty]);
-            if(sortProperty === 'inProgress'){
-                sorted.reverse();
-            }
+            const sorted = [...tasks].sort((a, b) => {
+                if(sortProperty === "isDone" && sortProperty === false){
+                    return a[sortProperty] - b[sortProperty];
+                } else{
+                    return b[sortProperty] - a[sortProperty];
+                }
+                
+            });
             console.log(sorted);
             setData(sorted);
         };

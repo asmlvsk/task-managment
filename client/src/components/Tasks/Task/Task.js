@@ -24,7 +24,12 @@ const Task = ({task, setCurrentId, currentId}) => {
                 <div className={styles.body}>
                 <div className={styles.header}>
                     <div className={styles.done}>{task.isDone ? <h4 style={{color: 'green'}}>Done</h4> : <h4 style={{color: 'yellow'}}> In progress</h4>}</div>
-                    <div className={styles.priority}>{task.priority}</div>
+                    <div className={styles.priority}>
+                        {
+                        task.priority === 0 ? "Low" : 
+                        task.priority === 1 ? "Medium" : 
+                        task.priority === 2 ? "High" : null}
+                    </div>
                 </div>
                 <div className={styles.container}>
                     <div className={styles.title}>{task.title}</div>

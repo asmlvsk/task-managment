@@ -22,7 +22,7 @@ const Form = ({show, close, currentId, setCurrentId}) => {
         title: '',
         description: '',
         isDone: false,
-        priority: "",
+        priority: 0,
         dueDate: new Date().toUTCString()
     });
 
@@ -52,7 +52,7 @@ const Form = ({show, close, currentId, setCurrentId}) => {
             title: '',
             description: '',
             isDone: false,
-            priority: "",
+            priority: 0,
             dueDate: new Date()
         })
     }
@@ -106,9 +106,9 @@ const Form = ({show, close, currentId, setCurrentId}) => {
                         label="Priority"
                         onChange={(e) => setTaskData({...taskData, priority: e.target.value})}
                     >
-                        <option>High</option>
-                        <option>Medium</option>
-                        <option>Low</option>
+                        <option value={2}>High</option>
+                        <option value={1}>Medium</option>
+                        <option value={0}>Low</option>
                     </NativeSelect>
 
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
