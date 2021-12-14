@@ -6,6 +6,7 @@ import { NavBar } from "./components/NavBar/NavBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from "./components/Main/Main";
 import Auth from "./components/Auth/Auth";
+import Registration from "./components/Auth/Registration";
 
 const App = () => {
     return(
@@ -16,6 +17,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" exact element={<Main/>}/>
                     <Route path="/auth" exact element={<Auth/>}/>
+                    <Route path="/registration" exact element={<Registration/>}/>
                 </Routes>
 
             </div>

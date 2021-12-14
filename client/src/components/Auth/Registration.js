@@ -7,17 +7,19 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 import {MdVisibility} from 'react-icons/md';
 import { useDispatch } from 'react-redux';
-import {signin} from "../../actions/auth"
+import {signup} from "../../actions/auth"
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
 const initialState = {
+    nickname: '',
     email: '',
     password: '',
+    confirmPassword: ''
 }
 
-const Auth = () => {
+const Registration = () => {
 
     const [showPass, setShowPass] = useState(false);
     const [formData, setFormData] = useState(initialState);
@@ -30,7 +32,7 @@ const Auth = () => {
     const onSubmit = (data, e) =>{
         e.preventDefault();
 
-        dispatch(signin(data, navigate));
+        dispatch(signup(data, navigate));
     }
 
     const handleChange = (e) => {
@@ -43,15 +45,21 @@ const Auth = () => {
         setShowPass(false);
     }
 
-
     const validationSchema = Yup.object().shape({
+        nickname: Yup.string()
+          .required('Nickname is required')
+          .min(6, 'Username must be at least 6 characters')
+          .max(20, 'Username must not exceed 20 characters'),
         email: Yup.string()
           .required('Email is required')
           .email('Email is invalid'),
         password: Yup.string()
           .required('Password is required')
           .min(5, 'Password must be at least 5 characters')
-          .max(40, 'Password must not exceed 40 characters')
+          .max(40, 'Password must not exceed 40 characters'),
+        confirmPassword: Yup.string()
+          .required('Confirm Password is required')
+          .oneOf([Yup.ref('password'), null], 'Confirm Password does not match')
       });
       
     const {
@@ -66,8 +74,21 @@ const Auth = () => {
     return (
         <ThemeProvider theme={theme}>
             <div className={styles.body}>
-                <h2>Sign In</h2>
+                <h2>Sign Up</h2>
                 <form className={styles.container} onSubmit={handleSubmit(onSubmit, onError)}>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        label="Your nickname"
+                        name="nickname"
+                        autoFocus
+                        onChange={handleChange}
+                        inputProps={{ minLength: 3, }}
+                        {...register('nickname', {required: false})}
+                        error={errors.nickname ? true : false}
+                    />
+                    <h3>{errors.nickname?.message}</h3>
                     <TextField
                         margin="normal"
                         fullWidth
@@ -99,15 +120,24 @@ const Auth = () => {
                             )
                         }}
                         autoComplete="current-password"
-                    />
+                        />
                         <h3>{errors.password?.message}</h3>
+                        <TextField 
+                            name="confirmPassword"
+                            label="Repeat Password" 
+                            onChange={handleChange} 
+                            type="password" 
+                            fullWidth 
+                            {...register('confirmPassword')} 
+                            error={errors.confirmPassword ? true : false}
+                        />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                             >
-                            Sign In
+                            Sign Up
                         </Button>
                         <Button
                             fullWidth
@@ -115,9 +145,9 @@ const Auth = () => {
                             variant='outlined'
                             {...register('switchBtn')}
                             component={Link} 
-                            to="/registration"
+                            to="/auth"
                         >
-                            Sign Up
+                            Sign In
                         </Button>
                 </form>
             </div>
@@ -131,4 +161,4 @@ const theme = createTheme({
     },
   });
 
-export default Auth;
+export default Registration;

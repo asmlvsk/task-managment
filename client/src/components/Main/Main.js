@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Tasks from "../Tasks/Tasks";
 import Modal from "../Form/Form";
@@ -35,6 +35,7 @@ const Main = () => {
                         </div>
                         
                         </div>
+
                         <Tasks setCurrentId={setCurrentId} currentId={currentId}/>
                     </div>
                 }

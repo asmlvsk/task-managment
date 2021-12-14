@@ -13,7 +13,7 @@ const taskSchema = mongoose.Schema({
         required: [true, 'You have to write your description']
     },
     isDone: Boolean,
-    priority: ['High', 'Medium', 'Low'],
+    priority: Number,
     dueDate: {
         type: Date,
         default: Date.now()

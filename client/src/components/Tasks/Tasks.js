@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -9,19 +9,52 @@ import styles from './Tasks.module.scss';
 const Tasks = ({setCurrentId, currentId}) => {
 
     const tasks = useSelector((state) => state.tasks);
-
+    const [data, setData] = useState([]);
+    const [sortType, setSortType] = useState('inProgress');
     console.log(tasks);
 
+    useEffect(() => {
+        const sortArray = type => {
+            const types = {
+                inProgress: 'inProgress',
+                done: 'isDone',
+                date: 'dueDate',
+                priority: 'priority',
+            };
+            const sortProperty = types[type];
+            const sorted = [...tasks].sort((a, b) => b[sortProperty] - a[sortProperty]);
+            if(sortProperty === 'inProgress'){
+                sorted.reverse();
+            }
+            console.log(sorted);
+            setData(sorted);
+        };
+        sortArray(sortType);
+    }, [sortType])
+
     return (
-        !tasks.length ? <div>Loading...</div> : (
+        <>
+        <div>
+            <select onChange={(e) => setSortType(e.target.value)}>
+                <option value="inProgress">In progress</option>
+                <option value="done">Done</option>
+                <option value="date">Date</option>
+                <option value="priority">Priority</option>
+            </select>
+        </div>
+        {!tasks.length ? 
+        <div>Loading...</div> : 
+        (
             <div className={styles.body}>
-                {tasks.map((task) => (
+                {data.map((task) => (
                     <div className={styles.tasks_container} key={task._id}>
                         <Task task={task} setCurrentId={setCurrentId} currentId={currentId}/>
                     </div>
                 ))}
             </div>
-        )
+        )}
+        </>
+
     );
 }
 
