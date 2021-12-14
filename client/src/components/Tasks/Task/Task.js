@@ -15,29 +15,35 @@ const Task = ({task, setCurrentId, currentId}) => {
     const [modal, setModal] = useState(false);
 
     const Toggle = () => setModal(!modal);
-
+    const user = JSON.parse(localStorage.getItem('profile'));
     const dispatch = useDispatch();
 
     return (
-        <div className={styles.body}>
-            <div className={styles.header}>
-                <div className={styles.done}>{task.isDone ? <h4 style={{color: 'green'}}>Done</h4> : <h4 style={{color: 'yellow'}}> In progress</h4>}</div>
-                <div className={styles.priority}>{task.priority}</div>
-            </div>
-            <div className={styles.container}>
-                <div className={styles.title}>{task.title}</div>
-                {/* <div className={styles.description}>{task.description}</div> */}
-            </div>
-            
-            <div className={styles.footer}>
-                <div className={styles.btns}>
-                    <AiOutlineEdit className={styles.btn} onClick={() => {Toggle(); setCurrentId(task._id);}}>Edit</AiOutlineEdit>
-                    <Modal currentId={currentId} setCurrentId={setCurrentId} show={modal} title="My Modal" close={Toggle}/>
-                    <AiOutlineDelete className={styles.btn} onClick={() => dispatch(deleteTasks(task._id))}>Delete</AiOutlineDelete>
+        <>
+            {(user?.result?._id === task?.creator) && (
+                <div className={styles.body}>
+                <div className={styles.header}>
+                    <div className={styles.done}>{task.isDone ? <h4 style={{color: 'green'}}>Done</h4> : <h4 style={{color: 'yellow'}}> In progress</h4>}</div>
+                    <div className={styles.priority}>{task.priority}</div>
                 </div>
-                <div className={styles.date}>{moment(task.dueDate).format('LLL')}</div>
+                <div className={styles.container}>
+                    <div className={styles.title}>{task.title}</div>
+                    {/* <div className={styles.description}>{task.description}</div> */}
+                </div>
+                
+                <div className={styles.footer}>
+                    <div className={styles.btns}>
+                        <AiOutlineEdit className={styles.btn} onClick={() => {Toggle(); setCurrentId(task._id);}}>Edit</AiOutlineEdit>
+
+                        <AiOutlineDelete className={styles.btn} onClick={() => dispatch(deleteTasks(task._id))}>Delete</AiOutlineDelete>
+                        <div>{task.nickname}</div>
+                    </div>
+                    <div className={styles.date}>{moment(task.dueDate).format('LLL')}</div>
+                    <Modal currentId={currentId} setCurrentId={setCurrentId} show={modal} title="My Modal" close={Toggle}/>
+                </div>
             </div>
-        </div>
+        )}
+        </>
     )
 }
 

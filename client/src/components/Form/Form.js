@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import formStyles from '../Form/Form.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
+
+import formStyles from '../Form/Form.module.scss';
 import { createTasks, updateTasks } from '../../actions/tasks';
-import { useForm, Controller } from 'react-hook-form';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -15,9 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const Form = ({show, close, currentId, setCurrentId}) => {
 
-    const { handleSubmit, control  } = useForm();
-
     const task = useSelector((state) => currentId ? state.tasks.find((p) => p._id === currentId) : null);
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     const [taskData, setTaskData] = useState({
         title: '',
@@ -38,9 +37,10 @@ const Form = ({show, close, currentId, setCurrentId}) => {
         e.preventDefault();
 
         if(currentId){
-            dispatch(updateTasks(currentId, taskData));
+            dispatch(updateTasks(currentId, {...taskData, name : user?.result?.name}));
         } else{
-            dispatch(createTasks(taskData));
+            dispatch(createTasks({...taskData, name : user?.result?.name}));
+
         }
         clear();
         close();
@@ -57,7 +57,6 @@ const Form = ({show, close, currentId, setCurrentId}) => {
         })
     }
 
-
     return (
     <>
         {
@@ -69,55 +68,61 @@ const Form = ({show, close, currentId, setCurrentId}) => {
                 <header className={formStyles.header}>
                     <div className={formStyles.title}>{currentId ? 'Edit' : 'Create'} a task</div>
                 </header>
-
                 <form onSubmit={onSubmit} className={formStyles.content}>
-                    <ThemeProvider theme={theme}>
-                        <TextField 
-                            label="Title" 
-                            variant="standard"
-                            value={taskData.title} 
-                            onChange={(e) => setTaskData({...taskData, title: e.target.value})}
-                            sx={{color:'success.main'}}
+                <ThemeProvider theme={theme}>
+                    <TextField 
+                        label="Title" 
+                        variant="standard"
+                        value={taskData.title} 
+                        onChange={(e) => setTaskData({...taskData, title: e.target.value})}
+                        sx={{color:'success.main'}}
+                        required
+                        errorMessages={['this field is required']}
+                        inputProps={{
+                            minLength: 3,
+                            }}
+                        fullWidth
+                    />
+
+                    <TextField
+                        label="Description"
+                        multiline
+                        rows={6}
+                        value={taskData.description}
+                        onChange={(e) => setTaskData({...taskData, description: e.target.value})}
+                        required
+                        inputProps={{
+                            minLength: 3,
+                            }}
+                        fullWidth
+                    />
+
+                    <label>Done</label>
+
+                    <Checkbox checked={taskData.isDone} onChange={(e) => setTaskData({...taskData, isDone: e.target.checked})} color="primary" />
+
+                    <NativeSelect
+                        value={taskData.priority}
+                        label="Priority"
+                        onChange={(e) => setTaskData({...taskData, priority: e.target.value})}
+                    >
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </NativeSelect>
+
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DateTimePicker
+                            renderInput={(props) => <TextField {...props} />}
+                            label="DateTimePicker"
+                            value={taskData.dueDate}
+                            onChange={(date) => setTaskData({dueDate: date})}
                         />
-
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="Description"
-                            multiline
-                            rows={6}
-                            value={taskData.description}
-                            onChange={(e) => setTaskData({...taskData, description: e.target.value})}
-                        />
-
-                        <label>Done</label>
-
-                        <Checkbox checked={taskData.isDone} onChange={(e) => setTaskData({...taskData, isDone: e.target.checked})} color="primary" />
-
-                        <NativeSelect
-                            value={taskData.priority}
-                            label="Priority"
-                            onChange={(e) => setTaskData({...taskData, priority: e.target.value})}
-                        >
-                            <option>High</option>
-                            <option>Medium</option>
-                            <option>Low</option>
-                        </NativeSelect>
-
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DateTimePicker
-                                renderInput={(props) => <TextField {...props} />}
-                                label="DateTimePicker"
-                                value={taskData.dueDate}
-                                onChange={(date) => setTaskData({dueDate: date})}
-                            />
-                        </LocalizationProvider>
-                        
-                        <Button type="submit" variant="outlined" size="large">Submit</Button>
-                    </ThemeProvider>
-
-
+                    </LocalizationProvider>
+                    
+                    <Button type="submit" variant="outlined" size="large">Submit</Button>
+                </ThemeProvider>
                 </form>
-
                 <footer className={formStyles.footer}>
                     <Button onClick={() => close()} variant="outlined" size="large">Cancel</Button>
                 </footer>

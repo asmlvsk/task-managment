@@ -17,7 +17,10 @@ const taskSchema = mongoose.Schema({
     dueDate: {
         type: Date,
         default: Date.now()
-    }
+    },
+    name: String,
+    creator: String,
+    createdAt: Date
 });
 
 const TaskMessage = mongoose.model('TaskMessage', taskSchema);

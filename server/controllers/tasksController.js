@@ -1,14 +1,14 @@
 import TaskMessage from '../models/taskMessage.js';
 import mongoose from 'mongoose';
 
-
 export const getTasks = async (req, res) => {
+    const task = req.body;
+    
     try {
-        const taskMessages = await TaskMessage.find();
-
+        const taskMessages = await TaskMessage.find({...task, creator: req.userId});
         res.status(200).json(taskMessages);
     } catch (error) {
-        res.status(404).json({message: error.message});
+        res.status(404).json(error.message);
     }
 };
 
@@ -16,7 +16,7 @@ export const createTasks = async (req, res) => {
 
     const task = req.body;
 
-    const newTask = new TaskMessage(task);
+    const newTask = new TaskMessage({...task, creator: req.userId, createdAt: new Date().toISOString()});
 
     try {
 

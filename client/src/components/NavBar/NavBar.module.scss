@@ -1,0 +1,25 @@
+.navBar{
+    display: flex;
+    justify-content: space-between;
+    padding: 1.4rem;
+    align-items: center;
+
+    .logo{
+        font-size: 2rem;
+    }
+
+    .items{
+        display: flex;
+        font-size: 1.3rem;
+        gap: 5rem;
+        cursor: pointer;
+    }
+
+    .item{
+        transition: color 0.2s linear;
+    }
+
+    .item:hover{
+        color: rgb(119, 93, 192);
+    }
+}
