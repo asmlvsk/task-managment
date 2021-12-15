@@ -3,4 +3,11 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+
+    hr{
+        width: 100%;
+        margin: 0 1.4rem;
+        opacity: 0.2;
+        border-color: rgb(127, 98, 206);
+    }
 }

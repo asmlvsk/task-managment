@@ -4,4 +4,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    .container{
+        max-width: 400px;
+    }
+
+    .errorMsg{
+        color: #F44336;
+    }
 }

@@ -3,9 +3,15 @@ import mongoose from 'mongoose';
 
 export const getTasks = async (req, res) => {
     const task = req.body;
-    
+    const sortedBy = {};
+
+    if(req.query.sortBy){
+        const str = req.query.sortBy.split(':');
+        sortedBy[str[0]] = str[1] === 'desc' ? -1:1;
+    }
+
     try {
-        const taskMessages = await TaskMessage.find({...task, creator: req.userId});
+        const taskMessages = await TaskMessage.find({...task, creator: req.userId}).sort(sortedBy);
         res.status(200).json(taskMessages);
     } catch (error) {
         res.status(404).json(error.message);

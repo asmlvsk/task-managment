@@ -14,6 +14,16 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    .lowStatus{
+        color:rgb(142, 109, 235);
+    }
+    .mediumStatus{
+        color:rgb(127, 98, 206);
+    }
+    .highStatus{
+        color:rgb(89, 69, 143);
+    }
 }
 
 .container{
@@ -42,5 +52,10 @@
     }
     .btn:hover{
         color: rgb(119, 93, 192);
+    }
+
+    .date{
+        font-size: 14px;
+        opacity: 0.8;
     }
 }

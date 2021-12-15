@@ -1,4 +1,4 @@
-import { FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
+import { FETCH_ALL, CREATE, UPDATE, DELETE, FETCH_SORTED } from '../constants/actionTypes';
 import * as api from '../api';
 
 export const getTasks = () => async (dispatch) => {
@@ -13,13 +13,24 @@ export const getTasks = () => async (dispatch) => {
     }
 }
 
+export const sortedTasks = (param) => async (dispatch) => {
+
+    try {
+        const { data } = await api.sortTasks(param);
+
+        dispatch({type: FETCH_SORTED, payload: data});
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const createTasks = (task) => async (dispatch) => {
 
     try {
         const { data } = await api.createTasks(task);
 
         dispatch({type: CREATE, payload: data});
-
     } catch (error) {
         console.log(error);
     }

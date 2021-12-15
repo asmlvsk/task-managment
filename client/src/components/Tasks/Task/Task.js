@@ -5,10 +5,15 @@ import styles from './Task.module.scss';
 
 import {AiOutlineEdit} from 'react-icons/ai';
 import {AiOutlineDelete} from 'react-icons/ai';
+import { MdExpandMore } from 'react-icons/md';
 
 import { useDispatch } from 'react-redux';
 
 import { deleteTasks } from '../../../actions/tasks';
+
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
 
 const Task = ({task, setCurrentId, currentId}) => {
 
@@ -26,14 +31,22 @@ const Task = ({task, setCurrentId, currentId}) => {
                     <div className={styles.done}>{task.isDone ? <h4 style={{color: 'green'}}>Done</h4> : <h4 style={{color: 'yellow'}}> In progress</h4>}</div>
                     <div className={styles.priority}>
                         {
-                        task.priority === 0 ? "Low" : 
-                        task.priority === 1 ? "Medium" : 
-                        task.priority === 2 ? "High" : null}
+                        task.priority === 2 ? <div className={styles.lowStatus}>Low</div> : 
+                        task.priority === 1 ? <div className={styles.mediumStatus}>Medium</div>  : 
+                        task.priority === 0 ? <div className={styles.highStatus}>High</div>  : null}
                     </div>
                 </div>
                 <div className={styles.container}>
-                    <div className={styles.title}>{task.title}</div>
-                    {/* <div className={styles.description}>{task.description}</div> */}
+                    <Accordion>
+                        <AccordionSummary
+                        expandIcon={<MdExpandMore />}
+                        >
+                            {task.title}
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            {task.description}
+                        </AccordionDetails>
+                    </Accordion>
                 </div>
                 
                 <div className={styles.footer}>

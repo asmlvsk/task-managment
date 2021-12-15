@@ -6,12 +6,9 @@ import { createTasks, updateTasks } from '../../actions/tasks';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import NativeSelect from '@mui/material/NativeSelect';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const Form = ({show, close, currentId, setCurrentId}) => {
 
@@ -23,7 +20,7 @@ const Form = ({show, close, currentId, setCurrentId}) => {
         description: '',
         isDone: false,
         priority: 0,
-        dueDate: new Date().toUTCString()
+        dueDate: new Date()
     });
 
     useEffect(() => {
@@ -69,7 +66,6 @@ const Form = ({show, close, currentId, setCurrentId}) => {
                     <div className={formStyles.title}>{currentId ? 'Edit' : 'Create'} a task</div>
                 </header>
                 <form onSubmit={onSubmit} className={formStyles.content}>
-                <ThemeProvider theme={theme}>
                     <TextField 
                         label="Title" 
                         variant="standard"
@@ -77,7 +73,6 @@ const Form = ({show, close, currentId, setCurrentId}) => {
                         onChange={(e) => setTaskData({...taskData, title: e.target.value})}
                         sx={{color:'success.main'}}
                         required
-                        errorMessages={['this field is required']}
                         inputProps={{
                             minLength: 3,
                             }}
@@ -91,9 +86,6 @@ const Form = ({show, close, currentId, setCurrentId}) => {
                         value={taskData.description}
                         onChange={(e) => setTaskData({...taskData, description: e.target.value})}
                         required
-                        inputProps={{
-                            minLength: 3,
-                            }}
                         fullWidth
                     />
 
@@ -101,27 +93,27 @@ const Form = ({show, close, currentId, setCurrentId}) => {
 
                     <Checkbox checked={taskData.isDone} onChange={(e) => setTaskData({...taskData, isDone: e.target.checked})} color="primary" />
 
-                    <NativeSelect
-                        value={taskData.priority}
+                    <Select
+                        value={taskData.priority || 0}
                         label="Priority"
                         onChange={(e) => setTaskData({...taskData, priority: e.target.value})}
                     >
-                        <option value={2}>High</option>
-                        <option value={1}>Medium</option>
-                        <option value={0}>Low</option>
-                    </NativeSelect>
+                        <MenuItem value={2}>Low</MenuItem>
+                        <MenuItem value={1}>Medium</MenuItem>
+                        <MenuItem value={0}>High</MenuItem>
+                    </Select>
 
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
-                            renderInput={(props) => <TextField {...props} />}
-                            label="DateTimePicker"
+                    {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DatePicker
+                            renderInput={(props) => <TextField value={taskData.dueDate} {...props} />}
+                            label="When you want to finish"
                             value={taskData.dueDate}
                             onChange={(date) => setTaskData({dueDate: date})}
+                            defaultValue={(new Date())}
                         />
-                    </LocalizationProvider>
+                    </LocalizationProvider> */}
                     
                     <Button type="submit" variant="outlined" size="large">Submit</Button>
-                </ThemeProvider>
                 </form>
                 <footer className={formStyles.footer}>
                     <Button onClick={() => close()} variant="outlined" size="large">Cancel</Button>
@@ -134,11 +126,5 @@ const Form = ({show, close, currentId, setCurrentId}) => {
     </>
     )
 }
-
-const theme = createTheme({
-    palette: {
-      mode: "dark"
-    },
-  });
 
 export default Form;

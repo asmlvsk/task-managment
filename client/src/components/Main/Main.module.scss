@@ -26,6 +26,39 @@
     .tasks{
         max-width: 1400px;
         min-height: 100vh;
+        display: flex;
+        justify-content: center;
+
+        .welcome{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .icon{
+                font-size: 10rem;
+                color: rgb(119, 93, 192);
+            }
+
+            .title{
+                font-size: 3rem;
+            }
+            .supTitle{
+                font-size: 1.3rem;
+            }
+
+            .links{
+                color: rgb(119, 93, 192);
+            }
+        }
     }
 
+}
+
+
+
+.select{
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 3rem 3rem 0;
 }

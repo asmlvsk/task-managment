@@ -10,6 +10,8 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
+export const sortTasks = (sortParam) => API.get(`/tasks?sortBy=${sortParam}`);
+
 export const fetchTasks = () => API.get('/tasks');
 export const createTasks = (newTask) => API.post('/tasks', newTask);
 export const updateTasks = (id, updatedTask) => API.patch(`/tasks/${id}`, updatedTask);

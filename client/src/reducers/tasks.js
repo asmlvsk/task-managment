@@ -1,8 +1,10 @@
-import { FETCH_ALL, CREATE, UPDATE, DELETE } from "../constants/actionTypes";
+import { FETCH_ALL, CREATE, UPDATE, DELETE, FETCH_SORTED } from "../constants/actionTypes";
 
 const Tasks = (tasks = [], action) =>{
     switch (action.type) {
         case FETCH_ALL:
+            return action.payload;
+        case FETCH_SORTED:
             return action.payload;
         case CREATE:
             return [...tasks, action.payload];

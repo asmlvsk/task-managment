@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { LOGOUT } from '../../constants/actionTypes';
 import decode from 'jwt-decode';
 import styles from './NavBar.module.scss';
+import {RiTaskLine} from 'react-icons/ri';
 
 export const NavBar = () => {
 
@@ -16,7 +17,7 @@ export const NavBar = () => {
     const logout = () =>{
         dispatch({type: LOGOUT});
 
-        navigate('/');
+        navigate('/auth');
 
         setUser(null);
     }
@@ -35,12 +36,12 @@ export const NavBar = () => {
     return (
         <nav className={styles.navBar}>
 
-            <Link to="/" className={styles.logo}>TasksApp</Link>
+            <Link to="/" className={styles.logo}><RiTaskLine/>TasksApp</Link>
 
             <div>
                 {user ? (
-                    <div>
-                        <div>{user.result.nickname}</div>
+                    <div className={styles.items}>
+                        <div>Welcome, {user.result.nickname}</div>
                         <button onClick={logout}>Logout</button>
                     </div>
                 ): (

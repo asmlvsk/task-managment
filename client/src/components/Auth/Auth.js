@@ -3,7 +3,6 @@ import styles from './Auth.module.scss';
 import { useNavigate, Link } from 'react-router-dom';
 
 import { TextField, Button, IconButton } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 import {MdVisibility} from 'react-icons/md';
 import { useDispatch } from 'react-redux';
@@ -64,71 +63,64 @@ const Auth = () => {
 
 
     return (
-        <ThemeProvider theme={theme}>
-            <div className={styles.body}>
-                <h2>Sign In</h2>
-                <form className={styles.container} onSubmit={handleSubmit(onSubmit, onError)}>
-                    <TextField
-                        margin="normal"
+        <div className={styles.body}>
+            <h2>Sign In</h2>
+            <form className={styles.container} onSubmit={handleSubmit(onSubmit, onError)}>
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    label="Email Address"
+                    required
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                    onChange={handleChange}
+                    {...register('email')}
+                    error={errors.email ? true : false}
+                />
+                    <span className={styles.errorMsg}>{errors.email?.message}</span>
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type={showPass ? "text" : "password"}
+                    onChange={handleChange}
+                    {...register('password')}
+                    error={errors.password ? true : false}
+                    InputProps={{
+                        endAdornment:(
+                            <InputAdornment position='end'>
+                                <IconButton onClick={handleShowPassword}>{<MdVisibility/>}</IconButton>
+                            </InputAdornment>
+                        )
+                    }}
+                    autoComplete="current-password"
+                />
+                    <span className={styles.errorMsg}>{errors.password?.message}</span>
+                    <Button
+                        type="submit"
                         fullWidth
-                        label="Email Address"
-                        required
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        onChange={handleChange}
-                        {...register('email')}
-                        error={errors.email ? true : false}
-                    />
-                        <h3>{errors.email?.message}</h3>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type={showPass ? "text" : "password"}
-                        onChange={handleChange}
-                        {...register('password')}
-                        error={errors.password ? true : false}
-                        InputProps={{
-                            endAdornment:(
-                                <InputAdornment position='end'>
-                                    <IconButton onClick={handleShowPassword}>{<MdVisibility/>}</IconButton>
-                                </InputAdornment>
-                            )
-                        }}
-                        autoComplete="current-password"
-                    />
-                        <h3>{errors.password?.message}</h3>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                            >
-                            Sign In
-                        </Button>
-                        <Button
-                            fullWidth
-                            name="switchBtn"
-                            variant='outlined'
-                            {...register('switchBtn')}
-                            component={Link} 
-                            to="/registration"
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign Up
-                        </Button>
-                </form>
-            </div>
-        </ThemeProvider>
+                        Sign In
+                    </Button>
+                    <Button
+                        fullWidth
+                        name="switchBtn"
+                        variant='outlined'
+                        {...register('switchBtn')}
+                        component={Link} 
+                        to="/registration"
+                    >
+                        Sign Up
+                    </Button>
+            </form>
+        </div>
     )
 }
 
-const theme = createTheme({
-    palette: {
-      mode: "dark"
-    },
-  });
 
 export default Auth;

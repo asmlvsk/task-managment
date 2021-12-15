@@ -6,6 +6,7 @@
 
     .logo{
         font-size: 2rem;
+        color: rgb(119, 93, 192);
     }
 
     .items{
@@ -13,6 +14,11 @@
         font-size: 1.3rem;
         gap: 5rem;
         cursor: pointer;
+
+        button{
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
     }
 
     .item{
