@@ -3,7 +3,7 @@ import React from 'react'
 export const Confirmed = () => {
     return (
         <div>
-            Confirmation link was sent to your e-mail box. Please, confirm your mail to continue.
+            Confirmation link was sent to your e-mail box. Please, confirm your mail to continue. OR CHECK YOUR SPAM FOLDER.
         </div>
     )
 }

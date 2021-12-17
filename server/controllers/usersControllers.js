@@ -1,9 +1,17 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import google from 'googleapis';
 
 import User from '../models/user.js';
 import { createTransport } from 'nodemailer';
 import { CLIENT_ORIGIN } from '../config.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const oAuth2Client = new google.Auth.OAuth2Client(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.REDIRECT_URI);
+oAuth2Client.setCredentials({refresh_token: process.env.REFRESH_TOKEN});
+const accessToken = await oAuth2Client.getAccessToken();
 
 export const signin = async (req, res) => {
     const { email, password } = req.body;
@@ -69,11 +77,14 @@ export const signup = async (req, res) => {
 }
 
 var transporter = createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
+  service: "gmail",
   auth:{
-    user: "smoilovskyi151@gmail.com",
-    pass: ""
+    type: 'OAuth2',
+    user: process.env.MAIL_USER,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    refreshToken: process.env.REFRESH_TOKEN,
+    accessToken: accessToken
   },
   tls:{
     rejectUnauthorized: false
@@ -97,33 +108,4 @@ export const verifyEmail = async (req, res) =>{
   } catch (error) {
     res.status(500).json({error});
   }
-}
-
-export const confirmEmail = async (req, res) =>{
-    const { id } = req.params;
-    try {
-    User.findById(id)
-    .then(user => {
-
-      if (!user) {
-        res.json({ msg: couldNotFindMsg });
-      }
-
-      else if (user && !user.confirmed) {
-        User.findByIdAndUpdate(id, { confirmed: true })
-          .then(() => res.json({ msg: confirmedMsg }))
-          .catch(err => console.log(err));
-      }
-
-      else  {
-        res.json({ msg: alreadyConfirmedMsg });
-      }
-
-    })
-    .catch(err => console.log(err));
-    res.status(200).json({id});
-  } catch (error) {
-    res.status(500).json({error});
-  }
-
 }
