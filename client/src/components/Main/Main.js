@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 
 import Tasks from "../Tasks/Tasks";
@@ -22,7 +22,7 @@ const Main = () => {
     const [currentId, setCurrentId] = useState(null);
     const user = JSON.parse(localStorage.getItem('profile'));
     const dispatch = useDispatch();
-    const [data, setData] = useState([]);
+    const [, setData] = useState([]);
     const [sortType, setSortType] = useState('isDone');
 
     useEffect(() => {
@@ -32,8 +32,7 @@ const Main = () => {
             console.log(sorted);
         };
         sortArray(sortType);
-        //dispatch(getTasks());
-    }, [sortType])
+    }, [dispatch, sortType])
 
     return (
         <section className={styles.tasks__section}>
@@ -41,10 +40,18 @@ const Main = () => {
                 {
                     !user?.result?.nickname ? 
                     <div className={styles.welcome}>
+
                         <RiTaskLine className={styles.icon}/>
+
                         <h3 className={styles.title}>Welcome to <span>Tasks App</span>!</h3>
-                        <h5 className={styles.supTitle}>Please, <Link className={styles.links} to="auth">Sign In</Link> or <Link className={styles.links} to="registration">Sign Up</Link> to start!</h5>
-                    </div> 
+
+                        <h5 className={styles.supTitle}>Please, 
+                            <Link className={styles.links} to="auth"> Sign In </Link>
+                            or
+                            <Link lassName={styles.links} to="registration"> Sign Up </Link> 
+                            to start!
+                        </h5>
+                    </div>
                     :
                     <div>
 

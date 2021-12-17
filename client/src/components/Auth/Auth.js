@@ -21,6 +21,24 @@ const Auth = () => {
     const [showPass, setShowPass] = useState(false);
     const [formData, setFormData] = useState(initialState);
 
+    const validationSchema = Yup.object().shape({
+        email: Yup.string()
+          .required('Email is required')
+          .email('Email is invalid'),
+        password: Yup.string()
+          .required('Password is required')
+          .min(5, 'Password must be at least 5 characters')
+          .max(40, 'Password must not exceed 40 characters')
+    });
+    
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+        } = useForm({
+        resolver: yupResolver(validationSchema)
+    });
+
     const handleShowPassword = () => setShowPass((prev) => !prev);
 
     const dispatch = useDispatch();
@@ -28,7 +46,7 @@ const Auth = () => {
 
     const onSubmit = (data, e) =>{
         e.preventDefault();
-
+        
         dispatch(signin(data, navigate));
     }
 
@@ -38,34 +56,14 @@ const Auth = () => {
 
     const onError = (errors, e) => console.log(errors, e);
 
-    const switchMode = () => {
-        setShowPass(false);
-    }
-
-
-    const validationSchema = Yup.object().shape({
-        email: Yup.string()
-          .required('Email is required')
-          .email('Email is invalid'),
-        password: Yup.string()
-          .required('Password is required')
-          .min(5, 'Password must be at least 5 characters')
-          .max(40, 'Password must not exceed 40 characters')
-      });
-      
-    const {
-        register,
-        handleSubmit,
-        formState: { errors }
-        } = useForm({
-        resolver: yupResolver(validationSchema)
-    });
-
 
     return (
         <div className={styles.body}>
+
             <h2>Sign In</h2>
+
             <form className={styles.container} onSubmit={handleSubmit(onSubmit, onError)}>
+
                 <TextField
                     margin="normal"
                     fullWidth
@@ -78,7 +76,10 @@ const Auth = () => {
                     {...register('email')}
                     error={errors.email ? true : false}
                 />
-                    <span className={styles.errorMsg}>{errors.email?.message}</span>
+
+                <span className={styles.errorMsg}>{errors.email?.message}</span>
+                <span className={styles.errorMsg}></span>
+
                 <TextField
                     margin="normal"
                     required
@@ -98,29 +99,32 @@ const Auth = () => {
                     }}
                     autoComplete="current-password"
                 />
-                    <span className={styles.errorMsg}>{errors.password?.message}</span>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        >
-                        Sign In
-                    </Button>
-                    <Button
-                        fullWidth
-                        name="switchBtn"
-                        variant='outlined'
-                        {...register('switchBtn')}
-                        component={Link} 
-                        to="/registration"
+
+                <span className={styles.errorMsg}>{errors.password?.message}</span>
+                
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
                     >
-                        Sign Up
-                    </Button>
+                    Sign In
+                </Button>
+
+                <Button
+                    fullWidth
+                    name="switchBtn"
+                    variant='outlined'
+                    {...register('switchBtn')}
+                    component={Link} 
+                    to="/registration"
+                >
+                    Sign Up
+                </Button>
+
             </form>
         </div>
     )
 }
-
 
 export default Auth;

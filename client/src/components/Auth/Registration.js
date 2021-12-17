@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import styles from './Auth.module.scss';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -6,7 +6,7 @@ import { TextField, Button, IconButton } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import {MdVisibility} from 'react-icons/md';
 import { useDispatch } from 'react-redux';
-import {signup} from "../../actions/auth"
+import {signup} from "../../actions/auth";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -40,10 +40,6 @@ const Registration = () => {
 
     const onError = (errors, e) => console.log(errors, e);
 
-    const switchMode = () => {
-        setShowPass(false);
-    }
-
     const validationSchema = Yup.object().shape({
         nickname: Yup.string()
           .required('Nickname is required')
@@ -69,84 +65,95 @@ const Registration = () => {
         resolver: yupResolver(validationSchema)
     });
 
-
     return (
         <div className={styles.body}>
             <h2>Sign Up</h2>
+
             <form className={styles.container} onSubmit={handleSubmit(onSubmit, onError)}>
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Your nickname"
-                    name="nickname"
-                    autoFocus
-                    onChange={handleChange}
-                    inputProps={{ minLength: 3, }}
-                    {...register('nickname')}
-                    error={errors.nickname ? true : false}
-                />
-                <span className={styles.errorMsg}>{errors.nickname?.message}</span>
-                <TextField
-                    margin="normal"
-                    fullWidth
-                    label="Email Address"
-                    required
-                    name="email"
-                    autoComplete="email"
-                    onChange={handleChange}
-                    {...register('email')}
-                    error={errors.email ? true : false}
-                />
-                    <span className={styles.errorMsg}>{errors.email?.message}</span>
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type={showPass ? "text" : "password"}
-                    onChange={handleChange}
-                    {...register('password')}
-                    error={errors.password ? true : false}
-                    InputProps={{
-                        endAdornment:(
-                            <InputAdornment position='end'>
-                                <IconButton onClick={handleShowPassword}>{<MdVisibility/>}</IconButton>
-                            </InputAdornment>
-                        )
-                    }}
-                    autoComplete="current-password"
-                    />
-                    <span className={styles.errorMsg}>{errors.password?.message}</span>
-                    <TextField 
-                        name="confirmPassword"
-                        label="Repeat Password" 
-                        onChange={handleChange} 
-                        type="password" 
-                        fullWidth 
-                        {...register('confirmPassword')} 
-                        error={errors.confirmPassword ? true : false}
-                    />
-                    <span className={styles.errorMsg}>{errors.confirmPassword?.message}</span>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        >
-                        Sign Up
-                    </Button>
-                    <Button
-                        fullWidth
-                        name="switchBtn"
-                        variant='outlined'
-                        {...register('switchBtn')}
-                        component={Link} 
-                        to="/auth"
-                    >
-                        Sign In
-                    </Button>
+
+            <TextField
+                margin="normal"
+                required
+                fullWidth
+                label="Your nickname"
+                name="nickname"
+                autoFocus
+                onChange={handleChange}
+                inputProps={{ minLength: 3, }}
+                {...register('nickname')}
+                error={errors.nickname ? true : false}
+            />
+
+            <span className={styles.errorMsg}>{errors.nickname?.message}</span>
+
+            <TextField
+                margin="normal"
+                fullWidth
+                label="Email Address"
+                required
+                name="email"
+                autoComplete="email"
+                onChange={handleChange}
+                {...register('email')}
+                error={errors.email ? true : false}
+            />
+
+            <span className={styles.errorMsg}>{errors.email?.message}</span>
+
+            <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type={showPass ? "text" : "password"}
+                onChange={handleChange}
+                {...register('password')}
+                error={errors.password ? true : false}
+                InputProps={{
+                    endAdornment:(
+                        <InputAdornment position='end'>
+                            <IconButton onClick={handleShowPassword}>{<MdVisibility/>}</IconButton>
+                        </InputAdornment>
+                    )
+                }}
+                autoComplete="current-password"
+            />
+
+            <span className={styles.errorMsg}>{errors.password?.message}</span>
+
+            <TextField 
+                name="confirmPassword"
+                label="Repeat Password" 
+                onChange={handleChange} 
+                type="password" 
+                fullWidth 
+                {...register('confirmPassword')} 
+                error={errors.confirmPassword ? true : false}
+            />
+
+            <span className={styles.errorMsg}>{errors.confirmPassword?.message}</span>
+
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                >
+                Sign Up
+            </Button>
+
+            <Button
+                fullWidth
+                name="switchBtn"
+                variant='outlined'
+                {...register('switchBtn')}
+                component={Link} 
+                to="/auth"
+            >
+                Sign In
+            </Button>
+            
             </form>
         </div>
     )

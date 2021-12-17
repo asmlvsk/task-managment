@@ -37,7 +37,6 @@ const Form = ({show, close, currentId, setCurrentId}) => {
             dispatch(updateTasks(currentId, {...taskData, name : user?.result?.name}));
         } else{
             dispatch(createTasks({...taskData, name : user?.result?.name}));
-
         }
         clear();
         close();
@@ -45,6 +44,7 @@ const Form = ({show, close, currentId, setCurrentId}) => {
 
     const clear = () =>{
         setCurrentId(null);
+
         setTaskData({
             title: '',
             description: '',
@@ -56,9 +56,7 @@ const Form = ({show, close, currentId, setCurrentId}) => {
 
     return (
     <>
-        {
-        show ?
-        
+        {show ?
         <div className={formStyles.modalContainer} onClick={() => close()}>
             <div className={formStyles.modal} onClick={(e) => e.stopPropagation()}>
                 

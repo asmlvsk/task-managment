@@ -10,12 +10,12 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
-export const sortTasks = (sortParam) => API.get(`/tasks?sortBy=${sortParam}`);
-
 export const fetchTasks = () => API.get('/tasks');
 export const createTasks = (newTask) => API.post('/tasks', newTask);
 export const updateTasks = (id, updatedTask) => API.patch(`/tasks/${id}`, updatedTask);
 export const deleteTasks = (id) => API.delete(`/tasks/${id}`);
+
+export const sortTasks = (sortParam) => API.get(`/tasks?sortBy=${sortParam}`);
 
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);

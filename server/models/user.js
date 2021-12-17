@@ -5,7 +5,12 @@ const userSchema = mongoose.Schema({
     email: {type: String, required: true},
     password: {type: String, required: true},
     id: {type: String},
-    regDate: {type: Date, default: Date.now()}
+    regDate: {type: Date, default: Date.now()},
+    emailToken: {type: String},
+    confirmed: {
+        type: Boolean,
+        default: false
+    }
 });
 
 export default mongoose.model("User", userSchema);
